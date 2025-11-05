@@ -21,7 +21,7 @@ mainGui.AddText("x+10 yp+2", "Initial delay (s):")
 initDelayEdit := mainGui.AddEdit("w60"), initDelayEdit.Value := 3
 
 mainGui.AddText("x+10 yp", "Key delay (ms):")
-keyDelayEdit := mainGui.AddEdit("w60"), keyDelayEdit.Value := 250
+keyDelayEdit := mainGui.AddEdit("w60"), keyDelayEdit.Value := 40
 
 mainGui.AddText("xm y+8", "Advance key (per value):")
 advanceDDL := mainGui.AddDropDownList("w150", ["Enter","Tab","Down","Right"])
@@ -85,6 +85,12 @@ Start(*) {
         SendText v
         Sleep keyDelay
         SendAdvance(advKey, keyDelay, false)
+    }
+
+    ; --- NEW: final confirm press so the last entry is saved ---
+    if !tmode && (advKey != "Enter") {   ; avoid double-Enter if Enter was your advance key
+        Send "{Enter}"
+        Sleep keyDelay
     }
 
     running := false
